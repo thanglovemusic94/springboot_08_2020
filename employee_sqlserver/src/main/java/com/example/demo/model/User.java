@@ -1,4 +1,4 @@
-package com.example.employee.model;
+package com.example.demo.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "user")
+@Table(name = "`user`")
 @Data
 
 @AllArgsConstructor

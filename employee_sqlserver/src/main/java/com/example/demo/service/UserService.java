@@ -1,9 +1,9 @@
-package com.example.employee.service;
+package com.example.demo.service;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.example.employee.model.User;
+import com.example.demo.model.User;
 
 
 public interface UserService {
@@ -14,4 +14,6 @@ public interface UserService {
     void deleteUser(Long id);
 
     Optional<User> findUserById(Long id);
+    
+    List<User> findAllUser(String keyword);
 }

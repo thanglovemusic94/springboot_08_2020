@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Title</title>
+<style type="text/css">
+* {
+	margin: 0;
+	padding: 0;
+}
+
+a {
+	display: inline-block;
+	text-decoration: none;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.wapper {
+	margin: 20px auto;
+	max-width: 1000px;
+}
+
+td, th {
+	padding: 5px 10px;
+}
+</style>
+</head>
+<body>
+	<div class="wapper">
+
+		<h4 class="text-center">kq tim kiem</h4>
+
+		<table border="1" style="margin: 0 auto;">
+			<thead>
+				<tr>
+					<th>stt</th>
+					<th>name</th>
+					<th>email</th>
+					<th>phone</th>
+					<th colspan="2">hành động</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="u,i : ${listSearch}">
+					<td th:text="${i.count}" scope="row"></td>
+					<td th:text="${u.name}"></td>
+					<td th:text="${u.email}"></td>
+					<td th:text="${u.phone}"></td>
+					<td><a th:href="@{/user/edit/{id}(id=${u.id})}">edit</a></td>
+					<td><a th:href="@{/user/delete/{id}(id=${u.id})}">delete</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

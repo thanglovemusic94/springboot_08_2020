@@ -23,19 +23,11 @@ public class HomeController {
         return "thongtin";
     }
 
-//    @PostMapping("/thongtinchitiet")
-//    public String thongtinchitiet(@RequestParam("name") String name, Model model){
-//        model.addAttribute("name", name);
-//        return "thongtinchitiet";
-//    }
+    @GetMapping("/thongtinchitiet")
+    public String thongtinchitiet(@RequestParam("name") String name, Model model){
+        model.addAttribute("name", name);
+        return "thongtinchitiet";
+    }
 
 
-
-
-
-//    @PostMapping("/thongtin")
-//    public String postthongtin(@RequestParam(value = "name", required = false) String name, Model model){
-//        model.addAttribute("name", name);
-//        return "redirect:/thongtin";
-//    }
 }
