@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -26,26 +25,33 @@ public class UserController {
 	private UserService userService;
 
 	@GetMapping("/")
-	public String index() throws JsonProcessingException {
+	public String index(){
 		return "index";
 	}
 	
+	@RequestMapping(path = "/api2", produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public String api2() throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		List<User> users = userService.getAllUser();
+		return mapper.writeValueAsString(users);
+	}
+
 //	@GetMapping(path ="/api", produces = "application/json;)
 //	@RequestBody
 	@RequestMapping(path = "/api", produces = "application/json; charset=UTF-8")
-    @ResponseBody
+	@ResponseBody
 	public String api(Model model, @Param("keyword") String keyword) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
 		List<User> users = null;
 		if (keyword != null && !keyword.isEmpty()) {
-			System.out.println(keyword);
-			 users = userService.findAllUser(keyword);
-			System.out.println("users"+ mapper.writeValueAsString(users));
+			users = userService.findAllUser(keyword);
 			model.addAttribute("users", mapper.writeValueAsString(users));
 			model.addAttribute("keyword", keyword);
 		} else {
-			 users = userService.getAllUser();
+			users = userService.getAllUser();
 			model.addAttribute("users", mapper.writeValueAsString(users));
+			System.out.println("all");
 		}
 
 		return mapper.writeValueAsString(users);

@@ -5,42 +5,67 @@
 <title>Title</title>
 <script type="text/javascript" th:src="@{jquery-3.5.1.min.js}"></script>
 <script type="text/javascript">
-	function resultSearch(stt, name, email, phone) {
+	function resultSearch(stt, name, email, phone, id) {
 		var rs = "";
 		rs += "<tr>";
 		rs += "<td>" + stt + "</td>";
 		rs += "<td>" + name + "</td>";
 		rs += "<td>" + email + "</td>";
-		rs += "<td><a th:href="+"@{/delete/{id}(id=${u.id})}"+">delete</a></td>";
-		rs += "<td><a th:href="+"@{/edit/{id}(id=${u.id})}"+">edit</a></td>";
-		
+		rs += "<td><a href=/delete/"+id+">delete</a></td>";
+		rs += "<td><a href=/edit/"+id+">edit</a></td>";
+
 		rs += "</tr>";
 		return rs;
 	};
 	$(document).ready(
-			
-			function() {
+			function() {	
 				var result = "";
-				$('#keyword').keyup(
-						function() {						
-							var search = $(this).val();
-							/* alert("keyword: " + search); */
+				$.ajax({
+					type : "GET",
+					url : "/api2",
+					dataType : "json",							
+					success : function(data) {
+						/* alert("result: " + JSON.stringify(data));  */
+						var stt = 1;
+						$.each(JSON.parse(JSON.stringify(data)),
+								function(index, value) {
+									result += resultSearch(stt,
+											value.name,
+											value.email,
+											value.phone, value.id);
+									stt++;
+								});
+						$('#result').html(result);
+					}
+				});
+			});	
+	
+	
+	$(document).ready(
+			function() {
+				$('#keyword').keyup(		
+						function() {
+							var result = "";
+							/* $('#result tr').remove(); */
+							var search = $(this).val().trim();
 							$.ajax({
 								type : "GET",
 								url : "/api",
 								data : {
 									keyword : search
 								},
-								dataType: "json",
-								success : function(data) {
-									/* alert("result: " + JSON.stringify(data));
-									alert("result: " + JSON.stringify(data)); */
+								dataType : "json",
+								success : function(data) {								
+									/* alert("result: " + JSON.stringify(data));  */
 									var stt = 1;
-									$.each(JSON.parse(JSON.stringify(data)), function(index, value) {
-										result += resultSearch(stt, value.name,
-												value.email, value.phone);
-										stt++;
-									});
+									$.each(JSON.parse(JSON.stringify(data)),
+											function(index, value) {
+												result += resultSearch(stt,
+														value.name,
+														value.email,
+														value.phone, value.id);
+												stt++;
+											});
 									$('#result').html(result);
 								}
 							});
@@ -86,8 +111,7 @@ td, th {
 				<div class="p-1">
 					<!-- input type="text" th:name="keyword" th:value="${keyword}"
 						id="keyword"> -->
-						<input type="text" 
-						id="keyword">
+					<input type="text" id="keyword">
 				</div>
 
 				<button id="keyword" type="submit">Submit</button>
